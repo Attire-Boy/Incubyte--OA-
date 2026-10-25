@@ -1,0 +1,123 @@
+@import 'tailwindcss';
+
+/*
+ * Lotline design tokens.
+ * Concrete ground, asphalt ink, and parking-lot line paint as the one accent.
+ */
+@theme {
+  --font-sans: 'Archivo Variable', ui-sans-serif, system-ui, sans-serif;
+
+  --color-concrete: #e6eaec;
+  --color-concrete-deep: #d5dbdf;
+  --color-paper: #ffffff;
+  --color-asphalt: #1c252d;
+  --color-asphalt-soft: #2b3640;
+  --color-mute: #56636e;
+  --color-paint: #f2c230;
+  --color-paint-deep: #d9a915;
+  --color-steel: #33536f;
+  --color-stock: #22704f;
+  --color-sold: #ad3226;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    font-variation-settings: 'wdth' 100;
+    color: var(--color-asphalt);
+    background: var(--color-concrete);
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    min-height: 100dvh;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-steel);
+    outline-offset: 2px;
+  }
+  input,
+  select,
+  textarea,
+  button {
+    font: inherit;
+  }
+}
+
+/* Base button, declared as a utility so the variants below can @apply it. */
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-md px-4 py-2.5 text-[15px] font-semibold
+    transition-colors disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+@layer components {
+  /* Badge lettering: wide and heavy, like chrome script on a tailgate. */
+  .type-badge {
+    font-variation-settings: 'wdth' 125;
+    font-weight: 850;
+    letter-spacing: -0.01em;
+    line-height: 0.95;
+  }
+  .type-narrow {
+    font-variation-settings: 'wdth' 75;
+  }
+
+  /* Dashed lane marking used under the header and on the auth panel. */
+  .lane-line {
+    height: 6px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--color-paint) 0 48px,
+      transparent 48px 72px
+    );
+  }
+
+  /* Painted parking bays: a stop line with slanted dividers below it. */
+  .parking-bays {
+    border-top: 6px solid var(--color-paint);
+    background-image: repeating-linear-gradient(
+      75deg,
+      transparent 0 92px,
+      var(--color-paint) 92px 98px
+    );
+  }
+
+  .field {
+    @apply w-full rounded-md border border-concrete-deep bg-paper px-3 py-2.5 text-[15px] text-asphalt
+      placeholder:text-mute/70 transition-colors focus:border-steel focus:outline-none;
+  }
+  .field-label {
+    @apply mb-1.5 block text-sm font-semibold text-asphalt;
+  }
+  .btn-primary {
+    @apply btn bg-asphalt text-paper hover:bg-asphalt-soft;
+  }
+  .btn-paint {
+    @apply btn bg-paint text-asphalt hover:bg-paint-deep;
+  }
+  .btn-ghost {
+    @apply btn border border-concrete-deep bg-paper text-asphalt hover:border-mute;
+  }
+  .btn-danger {
+    @apply btn bg-sold text-paper hover:brightness-110;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@keyframes sticker-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px) rotate(-0.6deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
